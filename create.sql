@@ -1,5 +1,5 @@
 CREATE TABLE RAW_global_confirmed_cases(
-	"date*" DATE primary key,
+	"date*" DATE,
  	"country*" VARCHAR2(50),
 	 "province*" VARCHAR2(50), 
 	 "lat" VARCHAR2(50), 
@@ -8,7 +8,7 @@ CREATE TABLE RAW_global_confirmed_cases(
 );
 
 CREATE TABLE RAW_global_deaths(
-	"date*" DATE primary key,
+	"date*" DATE,
  	"country*" VARCHAR2(50),
 	 "province*" VARCHAR2(50), 
 	 "lat" VARCHAR2(50), 
@@ -16,7 +16,7 @@ CREATE TABLE RAW_global_deaths(
 	 "count" int
 );
 CREATE TABLE RAW_us_confirmed_cases(
-	"date*" varchar2(10) primary key,
+	"date*" varchar2(10),
  	"Province_State" VARCHAR2(50),
 	 "Admin2" VARCHAR2(50), 
 	 "UID" VARCHAR2(50), 
@@ -31,7 +31,7 @@ CREATE TABLE RAW_us_confirmed_cases(
 );
 
 CREATE TABLE RAW_us_deaths(
-	"date*" varchar2(10) primary key,
+	"date*" varchar2(10),
  	"Province_State" VARCHAR2(50),
 	 "Admin2" VARCHAR2(50), 
 	 "UID" VARCHAR2(50), 
