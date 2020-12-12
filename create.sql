@@ -1,7 +1,7 @@
 CREATE TABLE RAW_global_confirmed_cases(
 	"date*" DATE primary key,
- 	"country*" VARCHAR2(50),
-	 "province*" VARCHAR2(50), 
+ 	"country*" VARCHAR2(50) primary key,
+	 "province*" VARCHAR2(50) primary key, 
 	 "lat" VARCHAR2(50), 
 	 "long" VARCHAR2(50), 
 	 "count" int
