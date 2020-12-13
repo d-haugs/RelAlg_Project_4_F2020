@@ -6,10 +6,10 @@ CREATE TABLE proto_consec_date(
   "count" int
 );
 
-INSERT INTO proto_consec_date('1/31/20','blue',1);
-INSERT INTO proto_consec_date('2/1/20','blue',2);
-INSERT INTO proto_consec_date('2/2/20','blue',4);
-INSERT INTO proto_consec_date('2/3/20','blue',8);
+INSERT INTO proto_consec_date  VALUES('31/1/20','blue',1);
+INSERT INTO proto_consec_date  VALUES('1/2/20','blue',2);
+INSERT INTO proto_consec_date  VALUES('2/2/20','blue',4);
+INSERT INTO proto_consec_date  VALUES('3/2/20','blue',8);
 
 set wrap off
 set line 160
