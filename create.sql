@@ -27,7 +27,8 @@ CREATE TABLE RAW_us_confirmed_cases(
 	  "Country_Region" VARCHAR2(50),
 	 "lat" VARCHAR2(50), 
 	 "long_" VARCHAR2(50),
-	 "Combined_Key" VARCHAR2(50)
+	 "Combined_Key" VARCHAR2(50), 
+	 "count" int
 );
 
 CREATE TABLE RAW_us_deaths(

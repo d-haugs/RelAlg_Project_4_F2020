@@ -1,0 +1,1 @@
+DROP TABLE proto_consec_date;
