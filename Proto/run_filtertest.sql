@@ -4,7 +4,7 @@ SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
-ops.filter_ra('proto_consec_date','count='2'','filter_test');
+ops.filter_ra('proto_consec_date','color=''blue''','filter_test');
 
 
 END;
