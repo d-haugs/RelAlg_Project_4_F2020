@@ -6,7 +6,7 @@ BEGIN
 
 -- ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color','color','p_mj_cdate'));
 
-ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_plus_count_sum'))
+ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_plus_count_sum'));
 
 END;
 /
