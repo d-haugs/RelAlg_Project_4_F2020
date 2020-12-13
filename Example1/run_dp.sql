@@ -5,11 +5,11 @@ DECLARE
 BEGIN
 
 
-ops.go(ops.group_ra('Play_data','C_id','Sum_score=sum(score)','C_id_um_of score'));
+ops.go(ops.group_ra('Play_data','C_id','Sum_score=sum(score)','C_id_um_of_score'));
 
 
 END;
 /
 
 
-select * from C_id_um_of score;
+select * from C_id_um_of_score;
