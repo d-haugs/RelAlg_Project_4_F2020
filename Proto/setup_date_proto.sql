@@ -1,9 +1,9 @@
 
 
 CREATE TABLE proto_consec_date(
-  "arbitraryID*" VARCHAR(32) primary key,
-  "date*" DATE,
-  "color*" VARCHAR2(50),
+  "arbitraryID" VARCHAR(32) primary key,
+  "date" DATE,
+  "color" VARCHAR2(50),
   "count" int
 );
 
