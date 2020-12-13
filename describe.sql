@@ -1,4 +1,2 @@
 DESCRIBE RAW_global_confirmed_cases;
 DESCRIBE RAW_global_deaths;
-DESCRIBE RAW_us_confirmed_cases;
-DESCRIBE RAW_us_deaths;

@@ -1,0 +1,1 @@
+DROP TABLE Play_data;

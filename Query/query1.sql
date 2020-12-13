@@ -6,7 +6,11 @@ DECLARE
 BEGIN
 
 -- Group song streams over song_id to get "ID of song with its total number of streams"
+<<<<<<< HEAD
 ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_deaths','country*,province*','country*,province*','a.country*,a.province*,a.date*,b.date*,a.count,b.count','raw_global_death_pair')); 
+=======
+ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_deaths','country,province','country,province','a.country,a.province,a.date,b.date,a.count,b.count','raw_global_death_pair')); 
+>>>>>>> 5fbdca56a8118ced17683d4d7ea808dc8475bc05
 
 -- Match Join all song data to get back "Song with its total number of streams"
 -- ops.go(ops.mjoin_ra('song','id_of_song_with_total_streams','song_id','song_id','song_with_total_streams'));
