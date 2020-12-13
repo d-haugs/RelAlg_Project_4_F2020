@@ -12,4 +12,4 @@ END;
 /
 
 
-select * from C_id _um_of score
+select * from C_id _um_of score;
