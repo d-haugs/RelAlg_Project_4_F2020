@@ -36,17 +36,14 @@ ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul'
 
 --TEST
 execute immediate 'DROP TABLE RAW_global_deaths_cumul';
+execute immediate 'DROP TABLE RAW_global_confirmed_cases_cumul';
 
---It appears dropping tables is not allowed in a begin/end block (transaction?)
-END;
-/
-
--- DROP TABLE RAW_global_deaths_cumul;
-DROP TABLE RAW_global_confirmed_cases_cumul;
 select table_name from user_tables;
 
-DECLARE
-BEGIN
+ops.go(ops.mjoin_ra('a=date_country_pair_w_ccase_and_death','date_country_pair_w_ccase_and_death','arbdate,country','arbdate+1,country','day_previousday_pair'));
+
+select * from day_previousday_pair where rownum <= 7;
+
 --group over arbdate, carry country, func: max(death/case)
 --TODO; ops.go(ops.group_ra('date_country_pair_w_ccase_and_death','arbdate','country,worst_death=max(cumdeathCount/cumconfirmedCount)','worst_country_per_day'));
 
