@@ -6,11 +6,11 @@ SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
--- Match join RAW_global_deaths with itself on country, province, 1 day difference
-ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_deaths','country,province,arbdate','country,province,arbdate - 1','raw_global_death_pair')); 
+-- Outer join RAW_global_deaths with itself on country, province, 1 day difference
+ops.go(ops.ojoin_left_ra('a=RAW_global_deaths','b=RAW_global_deaths','country,province,arbdate','country,province,arbdate - 1','raw_global_death_pair')); 
 
--- project out first date & subtract counts
-ops.go(ops.project_ra('raw_global_death_pair','country, province, arbdate = b_arbdate, daily_death_count = b_deathcount - a_deathcount','daily_count_global_death'));
+-- project out first date and subtract counts
+ops.go(ops.project_ra('raw_global_death_pair','country, province, arbdate = b_arbdate, daily_death_count = b_deathcount - a_deathcount,a_arbitraryID, b_arbitraryID','daily_count_global_death'));
 
 -- -- Group by genre to get "Genre with (number of streams for its most-streamed song) data"
 -- ops.go(ops.group_ra('song_with_total_streams','genre','max_streams=max(total_streams)','genre_with_max_total_streams'));
