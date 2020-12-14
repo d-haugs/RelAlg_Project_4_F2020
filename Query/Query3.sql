@@ -27,6 +27,7 @@ END;
 
 DROP TABLE RAW_global_deaths_cumul;
 DROP TABLE RAW_global_confirmed_cases_cumul;
+select table_name from user_tables;
 
 DECLARE
 BEGIN
