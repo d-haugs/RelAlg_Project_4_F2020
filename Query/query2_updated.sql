@@ -13,7 +13,7 @@ ops.go(ops.group_ra('RAW_global_confirmed_cases','arbdate,country','confirmed_ca
 
 ops.go(ops.mjoin_ra('a=confirmed_count_by_country_date_pair','b=death_count_by_country_date_pair','country,arbdate','country,arbdate','country,arbdate,death_case_count,confirmed_case_count','confirmeddeath_pair_for_country')); 
 
-ops.go(ops.filter('confirmeddeath_pair_for_country','confirmed_case_count!=0','filter_confirmeddeath_for_country'));
+ops.go(ops.filter_ra('confirmeddeath_pair_for_country','confirmed_case_count!=0','filter_confirmeddeath_for_country'));
 --  Proejct to get death to confirmed ratio
 ops.go(ops.project_ra('filter_confirmeddeath_for_country','country,arbdate,deathToConfirmedRatio=death_case_count/confirmed_case_count','country_deathToConfirmed_ratio'));
 
