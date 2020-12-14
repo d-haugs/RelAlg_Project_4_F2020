@@ -33,5 +33,5 @@ END;
 select count(*) from death_count_by_country_date_pair;
 select count(*) from confirmed_count_by_country_date_pair;
 select count(*) from confirmeddeath_pair_for_country;
-select * from final_confirmeddeath_ration order By deathToConfirmedRatio;
+select * from final_confirmeddeath_ration order By DESC deathToConfirmedRatio;
 
