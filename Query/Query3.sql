@@ -7,6 +7,7 @@ drop table cumul_deaths;
 drop table cumul_cases;
 drop table date_country_pair_w_ccase_and_death;
 drop table worst_country_per_day;
+drop table short;
 
 --test group
 drop table jan_feb_deaths_cumul;
@@ -98,4 +99,5 @@ END;
 
 select * from date_country_pair_w_ccase_and_death where rownum <= 7;
 select * from day_previousday_pair where rownum <= 7;
+select * from short where rownum <= 7;
 
