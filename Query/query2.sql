@@ -15,8 +15,9 @@ BEGIN
 -- ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
 -- Match join 
 -- Match Join all song data to get back "Song with its total number of streams"
-ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
+--ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
 
+ops.go(ops.ojoin_left_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
 
 -- -- Group by genre to get "Genre with (number of streams for its most-streamed song) data"
 ops.go(ops.group_ra('raw_global_confirmed_death_pair','arbdate,country','by_country_confirmed_case_count=sum(confirmedCount),by_country_death_case_count=sum(deathCount)','confirmed_death_cases_count_by_country_date_pair'));
