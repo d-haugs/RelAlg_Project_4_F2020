@@ -1,33 +1,32 @@
---drop table daily_count_global_death;
-
+--@create;
+--@Insert/DENORMALIZED_RAW_global_deaths_insert
 
 SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
 ops.go(ops.project_ra('RAW_global_deaths','country,province,arbdate,deathCount,arbitraryID','raw_global_death_no_lat_long'));
--- Outer join RAW_global_deaths with itself on country, province, 1 day difference
-ops.go(ops.cjoin_ra('a=raw_global_death_no_lat_long','b=raw_global_death_no_lat_long','a.country=b.country and decode(a.province,b.province,1,0)=1 and a.arbdate=b.arbdate-1','raw_global_death_pair'));
 
+ops.go(ops.group_ra('raw_global_death_no_lat_long','country,arbdate','country_death_count=sum(deathCount)','global_death_by_country'));
 
--- project out first date and subtract counts
---ops.go(ops.project_ra('raw_global_death_pair','country, province, arbdate = b_arbdate, daily_death_count = b_deathcount - a_deathcount,a_arbitraryID, b_arbitraryID','daily_count_global_death'));
+ops.go(ops.mjoin_ra('a=global_death_by_country','b=global_death_by_country','country,arbdate','country,arbdate-1','global_daily_death_by_country'));
 
--- -- Group by genre to get "Genre with (number of streams for its most-streamed song) data"
--- ops.go(ops.group_ra('song_with_total_streams','genre','max_streams=max(total_streams)','genre_with_max_total_streams'));
+ops.go(ops.reduce_ra('global_daily_death_by_country','country,arbdate=b_arbdate','b_country_death_count,a_country_death_count','r_global_daily_death_by_country'));
 
--- -- Times, Filter, Reduce to get the most popular song per genre.
--- -- Can this also be a Match Join?
--- -- Is the Reduce dangerous?
--- ops.go(ops.times_ra('S=song_with_total_streams','G=genre_with_max_total_streams','song__genre_max_pair'));
--- ops.go(ops.filter_ra('song__genre_max_pair','total_streams=max_streams','pop_song__genre_max_pair'));
--- ops.go(ops.reduce_ra('pop_song__genre_max_pair','song_id','genre=G_genre,song_title','pop_song_of_genre'));
+ops.go(ops.project_ra('r_global_daily_death_by_country','country,arbdate,country_daily_death_count = b_country_death_count - a_country_death_count','daily_death_count_by_country'));
 
+ops.go(ops.group_ra('daily_death_count_by_country','country','worst_count=max(country_daily_death_count)','worst_daily_death_count_by_country'));
+
+ops.go(ops.mjoin_ra('o=daily_death_count_by_country','w=worst_daily_death_count_by_country','country,country_daily_death_count','country,worst_count','worst_daily_death_count_by_country_with_date'));
 
 END;
 /
 
-select country,province,a_arbdate,a_deathcount,b_arbdate,b_deathcount from raw_global_death_pair where rownum <= 1;
 drop table raw_global_death_no_lat_long;
-drop table raw_global_death_pair;
---select * from daily_count_global_death where rownum <= 1;
+drop table global_death_by_country;
+drop table global_daily_death_by_country;
+drop table r_global_daily_death_by_country;
+drop table daily_death_count_by_country;
+drop table worst_daily_death_count_by_country;
+select * from worst_daily_death_count_by_country_with_date where rownum <= 30;
+drop table worst_daily_death_count_by_country_with_date;
