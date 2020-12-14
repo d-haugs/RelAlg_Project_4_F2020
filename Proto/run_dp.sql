@@ -20,7 +20,7 @@ ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_pl
 ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color,arb_date','color,arb_date+1','prev_day_match_both_dates'));
 -- Prototype 'unifying' my new relation into the desired calculation.
 ops.go(ops.reduce_ra('prev_day_match_both_dates','arb_date=a_arb_date,arbitraryid=a_arbitraryid,color,a_count,b_count','prev_day_match'));
-ops.go(ops.project_ra('prev_day_match','arbitraryID,arb_date,color,count_change=a_count-b_count','prev_day_difference'));
+ops.go(ops.project_ra('prev_day_match','arb_date,color,count_change=a_count-b_count','prev_day_difference'));
 
 
 -- Prototype 'full minus' of in congruent relations
