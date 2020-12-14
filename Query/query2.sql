@@ -12,8 +12,8 @@ SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
-ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','RAW_global_deaths_without_lat_longitude'));
-ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','RAW_global_confirmed_cases_without_lat_longitude'));
+ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','deaths_without_lat_longitude'));
+ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','confirmed_cases_without_lat_longitude'));
 
 
 -- Match join 
