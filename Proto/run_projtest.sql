@@ -6,10 +6,9 @@ BEGIN
 
 -- ops.go(ops.project_ra('prev_day_match','arbitraryid','prev_day_difference'));
 ops.go(ops.project_ra('proto_consec_date','arbitraryid,arb_date','project_proto'));
+ops.go(ops.project_ra('proto_consec_date',allbut('count'),'allbut_proto'));
 
 
--- Prototype 'full minus' of in congruent relations
--- ops.go(ops.full_minus_ra('proto_consec_date','prev_day_difference','arb_date','arb_date','proto_full_minus'));
 
 
 END;
@@ -20,3 +19,6 @@ END;
 
 select * from project_proto;
 DROP TABLE project_proto;
+
+select * from allbut_proto;
+DROP TABLE allbut_proto;
