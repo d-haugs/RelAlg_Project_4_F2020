@@ -3,8 +3,8 @@
 -- drop table raw_global_death_pair_province_countries;
 -- drop table RAW_global_deaths_without_province_countries;
 -- drop table raw_global_death_pair_non_province_countries;
-drop table RAW_global_deaths_cumul;
-drop table RAW_global_confirmed_cases_cumul;
+drop table cumul_deaths;
+drop table cumul_cases;
 drop table date_country_pair_w_ccase_and_death;
 drop table worst_country_per_day;
 
@@ -18,26 +18,26 @@ BEGIN
 
 
 -- ops.go(ops.project_ra('RAW_global_deaths', allbut('RAW_global_deaths','lat,longitude'), 'RAW_global_deaths_without_lat_long'));
-ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country','cumdeathCount=sum(deathCount)', 'RAW_global_deaths_cumul'));
-ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'RAW_global_confirmed_cases_cumul'));
+ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country','cumdeathCount=sum(deathCount)', 'cumul_deaths'));
+ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'cumul_cases'));
 
 -- Attempt at grabbing the last day of results. 
 --the problem is the date isolation
--- ops.go(ops.group_ra('RAW_global_deaths_cumul','country','cumdeathCount','lastDate=max(arbdate)', 'final_deaths_per_country'));
--- ops.go(ops.group_ra('RAW_global_confirmed_cases_cumul','country','cumconfirmedCount','lastDate=max(arbdate)', 'final_cases_per_country'));
+-- ops.go(ops.group_ra('cumul_deaths','country','cumdeathCount','lastDate=max(arbdate)', 'final_deaths_per_country'));
+-- ops.go(ops.group_ra('cumul_cases','country','cumconfirmedCount','lastDate=max(arbdate)', 'final_cases_per_country'));
 
 
 --match confirmed cases and deaths by same date,country
 --WARNING: this is too big for the full dataset. must be broken down to run on that.
 --TODO: 
--- ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
-ops.go(ops.mjoin_ra('d=RAW_global_deaths_cumul','c=RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','short'));
+-- ops.go(ops.mjoin_ra('cumul_deaths','cumul_cases','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
+ops.go(ops.mjoin_ra('d=cumul_deaths','c=cumul_cases','arbdate,country','arbdate,country','short'));
 --TODO: attempt to do this join as a for loop and unions.
 --???How would I drop the generated tables, if I can't drop in a BEGIN-END block?
 
 --TEST
-execute immediate 'DROP TABLE RAW_global_deaths_cumul';
-execute immediate 'DROP TABLE RAW_global_confirmed_cases_cumul';
+execute immediate 'DROP TABLE cumul_deaths';
+execute immediate 'DROP TABLE cumul_cases';
 
 --does not work
 -- execute immediate 'select table_name from user_tables';
@@ -50,8 +50,8 @@ ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','d
 
 --!!!NOTE: do this later
 -- Match deaths and confirmed cases with their previous day data per date,country
--- ops.go(ops.mjoin_ra('a=RAW_global_deaths_cumul','b=RAW_global_deaths_cumul','arbdate,country','arbdate - 1,country','raw_global_death_pair_province_countries'));
--- ops.go(ops.mjoin_ra('a=RAW_global_confirmed_cases_cumul','b=RAW_global_confirmed_cases_cumul','arbdate,country','arbdate - 1,country','raw_global_c_case_pair_province_countries'));
+-- ops.go(ops.mjoin_ra('a=cumul_deaths','b=cumul_deaths','arbdate,country','arbdate - 1,country','raw_global_death_pair_province_countries'));
+-- ops.go(ops.mjoin_ra('a=cumul_cases','b=cumul_cases','arbdate,country','arbdate - 1,country','raw_global_c_case_pair_province_countries'));
 -- Generate per day counts
 -- ops.go(ops.group_ra('raw_global_death_pair_province_countries', 'arbdate,country','daydeathCount=sum(cumdeathCount)', 'daily_death_for_day'));
 -- ops.go(ops.group_ra('raw_global_c_case_pair_province_countries', 'arbdate,country','dayconfirmedCount=sum(cumconfirmedCount)', 'daily_ccases_for_day'));
