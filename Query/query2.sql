@@ -4,8 +4,10 @@ SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
--- Group song streams over song_id to get "ID of song with its total number of streams"
-ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
+ops.project_ra('RAW_global_deaths',ops.allbut('lat,longitude'),'RAW_global_deaths_without_lat_longitude')
+ops.project_ra('RAW_global_confirmed_cases',ops.allbut('lat,longitude'),'RAW_global_confirmed_cases_without_lat_longitude')
+-- Match join 
+ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
 
 -- Match Join all song data to get back "Song with its total number of streams"
 -- ops.go(ops.mjoin_ra('song','id_of_song_with_total_streams','song_id','song_id','song_with_total_streams'));
