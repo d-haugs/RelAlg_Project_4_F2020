@@ -4,8 +4,8 @@ CREATE TABLE RAW_global_confirmed_cases(
  	country VARCHAR2(50),
 	province VARCHAR2(50), 
 	lat VARCHAR2(50), 
-	long VARCHAR2(50), 
-	count int
+	longitude VARCHAR2(50), 
+	confirmedCount int
 );
 
 CREATE TABLE RAW_global_deaths(
@@ -14,6 +14,6 @@ CREATE TABLE RAW_global_deaths(
  	country VARCHAR2(50),
 	province VARCHAR2(50), 
 	lat VARCHAR2(50), 
-	long VARCHAR2(50), 
-	count int
+	longitude VARCHAR2(50), 
+	deathCount int
 );
