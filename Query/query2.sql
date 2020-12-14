@@ -12,15 +12,15 @@ SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
-ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','RAW_global_deaths_without_lat_longitude'));
-ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','RAW_global_confirmed_cases_without_lat_longitude'));
+ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','deaths_without_lat_longitude'));
+ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','confirmed_cases_without_lat_longitude'));
 
 
 -- Match join 
 -- Match Join all song data to get back "Song with its total number of streams"
-ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_with_province')); 
+ops.go(ops.mjoin_ra('a=deaths_without_lat_longitude','b=confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_with_province')); 
 
-ops.go(ops.full_minus_ra('RAW_global_deaths_without_lat_longitude','confirmed_death_pair_for_country_with_province','country,province','country,province','confirmed_cases_for_country_without_province')); 
+ops.go(ops.full_minus_ra('deaths_without_lat_longitude','confirmed_cases_without_lat_longitude','country,province','country,province','confirmed_cases_for_country_without_province')); 
 
 -- ops.go(ops.full_minus_ra('RAW_global_confirmed_cases_without_lat_longitude','confirmed_death_pair_for_country_with_province','country,province','country,province','death_cases_for_country_without_province')); 
 
