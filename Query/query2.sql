@@ -1,8 +1,5 @@
 -- @@drop
-DROP TABLE deaths_without_lat_longitude;
-DROP TABLE confirmed_cases_without_lat_longitude;
-DROP TABLE confirmed_death_pair_for_country_with_province;
-DROP TABLE confirmed_cases_for_country_without_province;
+
 -- DROP TABLE death_cases_for_country_without_province;
 -- DROP TABLE confirmed_death_pair_for_country_without_province;
 
@@ -41,7 +38,10 @@ ops.go(ops.full_minus_ra('deaths_without_lat_longitude','confirmed_cases_without
 
 END;
 /
-
+select * from deaths_without_lat_longitude where rownum <= 30;
+select * from confirmed_cases_without_lat_longitude where rownum <= 30;
+select * from confirmed_death_pair_for_country_with_province where rownum <= 30;
+select * from confirmed_cases_for_country_without_province where rownum <= 30;
 -- select country,province,arbdate,deathCount,confirmedCount from confirmed_death_pair_for_country_with_province where rownum <= 30;
 
 
@@ -49,3 +49,8 @@ END;
 -- select country,new_Date,by_country_death_case_count,by_country_confirmed_case_count from latest_date_confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
 
 -- select * from RAW_global_deaths_without_lat_longitude where rownum <= 30;
+
+DROP TABLE deaths_without_lat_longitude;
+DROP TABLE confirmed_cases_without_lat_longitude;
+DROP TABLE confirmed_death_pair_for_country_with_province;
+DROP TABLE confirmed_cases_for_country_without_province;
