@@ -23,5 +23,5 @@ ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','countr
 END;
 /
 
-select * from raw_global_death_pair where rownum <= 30;
-DROP TABLE raw_global_death_pair;
+select * from raw_global_confirmed_death_pair where rownum <= 30;
+-- DROP TABLE raw_global_confirmed_death_pair;
