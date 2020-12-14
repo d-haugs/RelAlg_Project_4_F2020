@@ -1,4 +1,6 @@
 -- @@drop
+-- DROP TABLE RAW_global_deaths_without_lat_longitude;
+-- DROP TABLE RAW_global_confirmed_cases_without_lat_longitude;
 DROP TABLE raw_global_confirmed_death_pair;
 SET SERVEROUTPUT ON
 DECLARE
@@ -6,17 +8,16 @@ BEGIN
 
 -- ops.go(ops.project_ra('RAW_global_deaths',ops.allbut('lat,longitude'),'RAW_global_deaths_without_lat_longitude'));
 -- ops.go(ops.project_ra('RAW_global_confirmed_cases',ops.allbut('lat,longitude'),'RAW_global_confirmed_cases_without_lat_longitude'));
-ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','RAW_global_deaths_without_lat_longitude'));
-ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','RAW_global_confirmed_cases_without_lat_longitude'));
-
+-- ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','RAW_global_deaths_without_lat_longitude'));
+-- ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','RAW_global_confirmed_cases_without_lat_longitude'));
+-- ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
 -- Match join 
-ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
-
 -- Match Join all song data to get back "Song with its total number of streams"
--- ops.go(ops.mjoin_ra('song','id_of_song_with_total_streams','song_id','song_id','song_with_total_streams'));
+ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
+
 
 -- -- Group by genre to get "Genre with (number of streams for its most-streamed song) data"
--- ops.go(ops.group_ra('song_with_total_streams','genre','max_streams=max(total_streams)','genre_with_max_total_streams'));
+ops.go(ops.group_ra('raw_global_confirmed_death_pair','arbdate,country','by_country_confirmed_case_count=sum(confirmedCount),by_country_death_case_count=sum(deathCount)','confirmed_death_cases_count_by_country_date_pair'));
 
 -- -- Times, Filter, Reduce to get the most popular song per genre.
 -- -- Can this also be a Match Join?
@@ -28,5 +29,7 @@ ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_co
 END;
 /
 
-select * from raw_global_confirmed_death_pair where rownum <= 30;
+select country,province,arbdate,deathCount,confirmedCount from raw_global_confirmed_death_pair where rownum <= 30;
 
+
+select country,province,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
