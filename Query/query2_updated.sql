@@ -18,7 +18,7 @@ ops.go(ops.filter_ra('confirmeddeath_pair_for_country','confirmed_case_count!=0'
 ops.go(ops.project_ra('filter_confirmeddeath_for_country','country,arbdate,deathToConfirmedRatio=death_case_count/confirmed_case_count','country_deathToConfirmed_ratio'));
 
 -- Group By country 
--- ops.go(ops.group_ra('confirmeddeath_pair_for_country','country','new_Date=max(arbdate)','death_confirmed_pair'));
+ops.go(ops.group_ra('country_deathToConfirmed_ratio','country','new_Date=max(arbdate)','death_confirmed_pair'));
 
 
 END;
