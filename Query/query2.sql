@@ -14,13 +14,14 @@ BEGIN
 ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','RAW_global_deaths_without_lat_longitude'));
 ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','RAW_global_confirmed_cases_without_lat_longitude'));
 
+
 -- Match join 
 -- Match Join all song data to get back "Song with its total number of streams"
--- ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_confirmed_cases','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_with_province')); 
+ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_with_province')); 
 
--- ops.go(ops.full_minus_ra('RAW_global_deaths','confirmed_death_pair_for_country_with_province','country,province','country,province','confirmed_cases_for_country_without_province')); 
+ops.go(ops.full_minus_ra('RAW_global_deaths_without_lat_longitude','confirmed_death_pair_for_country_with_province','country,province','country,province','confirmed_cases_for_country_without_province')); 
 
--- ops.go(ops.full_minus_ra('RAW_global_confirmed_cases','confirmed_death_pair_for_country_with_province','country,province','country,province','death_cases_for_country_without_province')); 
+-- ops.go(ops.full_minus_ra('RAW_global_confirmed_cases_without_lat_longitude','confirmed_death_pair_for_country_with_province','country,province','country,province','death_cases_for_country_without_province')); 
 
 -- ops.go(ops.mjoin_ra('a=confirmed_cases_for_country_without_province','b=death_cases_for_country_without_province','country,arbdate','country,arbdate','country,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_without_province')); 
 
@@ -46,4 +47,4 @@ END;
 -- select country,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
 -- select country,new_Date,by_country_death_case_count,by_country_confirmed_case_count from latest_date_confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
 
-select * from RAW_global_deaths_without_lat_longitude;
+select * from RAW_global_deaths_without_lat_longitude where rownum <= 30;
