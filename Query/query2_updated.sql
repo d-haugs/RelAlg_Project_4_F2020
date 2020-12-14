@@ -25,7 +25,7 @@ ops.go(ops.project_ra('filter_confirmeddeath_for_country','country,arbdate,death
 ops.go(ops.group_ra('country_deathToConfirmed_ratio','country','new_Date=max(arbdate)','death_confirmed_pair'));
 
 -- MJ 
-ops.go(ops.mjoin_ra('a=country_deathToConfirmed_ratio','b=death_confirmed_pair','country,arbdate','country,new_Date','deathToConfirmedRatio,country,arbdate','final_confirmeddeath_ratio')); 
+ops.go(ops.mjoin_ra('a=country_deathToConfirmed_ratio','b=death_confirmed_pair','country,arbdate','country,new_Date','country,arbdate,deathToConfirmedRatio','final_confirmeddeath_ratio')); 
 
 
 END;
