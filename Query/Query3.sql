@@ -1,8 +1,9 @@
-drop table raw_global_death_pair;
-drop table daily_count_global_death;
-drop table raw_global_death_pair_province_countries;
-drop table RAW_global_deaths_without_province_countries;
-drop table raw_global_death_pair_non_province_countries;
+-- drop table raw_global_death_pair;
+-- drop table daily_count_global_death;
+-- drop table raw_global_death_pair_province_countries;
+-- drop table RAW_global_deaths_without_province_countries;
+-- drop table raw_global_death_pair_non_province_countries;
+drop table RAW_global_deaths_cum_country_deaths;
 
 
 SET SERVEROUTPUT ON
@@ -11,7 +12,7 @@ BEGIN
 
 -- Project lat,long out of RAW_global_deaths
 -- ops.go(ops.project_ra('RAW_global_deaths', allbut('RAW_global_deaths','lat,longitude'), 'RAW_global_deaths_without_lat_long'));
-ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country,cumdeathCount=sum(deathcount)', 'RAW_global_deaths_cumulative_country_deaths'));
+ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country,cumdeathCount=sum(deathcount)', 'RAW_global_deaths_cum_country_deaths'));
 
 -- Match join RAW_global_deaths with itself on country, province, 1 day difference
 -- ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_deaths','country,province,arbdate','country,province,arbdate - 1','raw_global_death_pair_province_countries'));
