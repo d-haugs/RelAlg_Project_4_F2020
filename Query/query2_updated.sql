@@ -5,7 +5,7 @@ DROP TABLE confirmeddeath_pair_for_country;
 DROP TABLE FILTER_CONFIRMEDDEATH_FOR_COUNTRY;
 DROP TABLE country_deathToConfirmed_ratio;
 DROP TABLE death_confirmed_pair;
-DROP TABLE final_confirmeddeath_ration;
+DROP TABLE final_confirmeddeath_ratio;
 SET SERVEROUTPUT ON
 DECLARE
 BEGIN
@@ -25,7 +25,7 @@ ops.go(ops.project_ra('filter_confirmeddeath_for_country','country,arbdate,death
 ops.go(ops.group_ra('country_deathToConfirmed_ratio','country','new_Date=max(arbdate)','death_confirmed_pair'));
 
 -- MJ 
-ops.go(ops.mjoin_ra('a=country_deathToConfirmed_ratio','b=death_confirmed_pair','country,arbdate','country,new_Date','deathToConfirmedRatio,country,arbdate','final_confirmeddeath_ration')); 
+ops.go(ops.mjoin_ra('a=country_deathToConfirmed_ratio','b=death_confirmed_pair','country,arbdate','country,new_Date','country,arbdate,deathToConfirmedRatio','final_confirmeddeath_ratio')); 
 
 
 END;
@@ -33,5 +33,5 @@ END;
 select count(*) from death_count_by_country_date_pair;
 select count(*) from confirmed_count_by_country_date_pair;
 select count(*) from confirmeddeath_pair_for_country;
-select * from final_confirmeddeath_ration order By deathToConfirmedRatio DESC;
+select * from final_confirmeddeath_ratio order By deathToConfirmedRatio DESC;
 
