@@ -1,7 +1,8 @@
 -- @@drop
-
--- DROP TABLE confirmed_death_pair_for_country_with_province;
--- DROP TABLE confirmed_cases_for_country_without_province;
+DROP TABLE RAW_global_deaths_without_lat_longitude;
+DROP TABLE RAW_global_confirmed_cases_without_lat_longitude;
+DROP TABLE confirmed_death_pair_for_country_with_province;
+DROP TABLE confirmed_cases_for_country_without_province;
 -- DROP TABLE death_cases_for_country_without_province;
 -- DROP TABLE confirmed_death_pair_for_country_without_province;
 
