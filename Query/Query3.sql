@@ -21,10 +21,6 @@ BEGIN
 ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country','cumdeathCount=sum(deathCount)', 'RAW_global_deaths_cumul'));
 ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'RAW_global_confirmed_cases_cumul'));
 
--- Proposed idea: use monthly blocks to reduce effective table size for joins.
-ops.go(ops.filter_ra('RAW_global_deaths_cumul','arbdate<='TO_DATE('03/01/2020','DD/MM/YYYY'),'jan_feb_deaths_cumul'));
-
-
 
 --match confirmed cases and deaths by same date,country
 ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
