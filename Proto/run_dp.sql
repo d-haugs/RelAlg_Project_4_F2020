@@ -15,10 +15,12 @@ ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_pl
 
 -- Prototype using mjoin to match consecutive values of date (for getting to difference from yesterday)
 -- with 'color' as a stand-in for the rest of your real relation's itentifier
-ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color,arb_date','color,arb_date-1','prev_day_match_both_dates'));
+-- path operators in the column references are still the value specified, but will match the date that is the result of the math operator.
+-- adding to b_arb_date will match b to "tomorrow" for itself, making a the latter date.
+ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color,arb_date','color,arb_date+1','prev_day_match_both_dates'));
 -- Prototype 'unifying' my new relation into the desired calculation.
 ops.go(ops.reduce_ra('prev_day_match_both_dates','arb_date=a_arb_date,arbitraryid=a_arbitraryid,color,a_count,b_count','prev_day_match'));
-ops.go(ops.project_ra('prev_day_match','arb_date,arbitraryid,color,count_change=b_count-a_count','prev_day_difference'));
+ops.go(ops.project_ra('prev_day_match','arb_date,arbitraryid,color,count_change=a_count-b_count','prev_day_difference'));
 
 
 

@@ -11,3 +11,5 @@ END;
 /
 
 select * from filter_test;
+
+DROP TABLE filter_test;
