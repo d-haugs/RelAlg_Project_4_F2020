@@ -31,7 +31,7 @@ ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirm
 --WARNING: this is too big for the full dataset. must be broken down to run on that.
 --TODO: 
 -- ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
-ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','short'));
+ops.go(ops.mjoin_ra('d=RAW_global_deaths_cumul','c=RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','short'));
 --TODO: attempt to do this join as a for loop and unions.
 --???How would I drop the generated tables, if I can't drop in a BEGIN-END block?
 
