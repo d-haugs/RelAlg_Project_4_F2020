@@ -4,8 +4,8 @@ SET SERVEROUTPUT ON
 DECLARE
 BEGIN
 
-ops.project_ra('RAW_global_deaths',ops.allbut('lat,longitude'),'RAW_global_deaths_without_lat_longitude')
-ops.project_ra('RAW_global_confirmed_cases',ops.allbut('lat,longitude'),'RAW_global_confirmed_cases_without_lat_longitude')
+ops.go(ops.project_ra('RAW_global_deaths',ops.allbut('lat,longitude'),'RAW_global_deaths_without_lat_longitude'));
+ops.go(ops.project_ra('RAW_global_confirmed_cases',ops.allbut('lat,longitude'),'RAW_global_confirmed_cases_without_lat_longitude'));
 -- Match join 
 ops.go(ops.mjoin_ra('a=RAW_global_deaths_without_lat_longitude','b=RAW_global_confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','raw_global_confirmed_death_pair')); 
 
