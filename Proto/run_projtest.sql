@@ -6,7 +6,7 @@ BEGIN
 
 -- ops.go(ops.project_ra('prev_day_match','arbitraryid','prev_day_difference'));
 ops.go(ops.project_ra('proto_consec_date','arbitraryid,arb_date','project_proto'));
-ops.go(ops.project_ra('proto_consec_date',allbut('count'),'allbut_proto'));
+ops.go(ops.project_ra('proto_consec_date',ops.allbut('count'),'allbut_proto'));
 
 
 
