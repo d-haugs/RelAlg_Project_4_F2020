@@ -24,6 +24,7 @@ ops.go(ops.reduce_ra('prev_day_match_both_dates','a_arbitraryid,arb_date=a_arb_d
 -- ops.go(ops.project_ra('prev_day_match','arbitraryid','prev_day_difference'));
 ops.go(ops.project_ra('prev_day_match','a_arbitraryid,arb_date,color,count_change=a_count-b_count','prev_day_difference'));
 
+ops.go(ops.project_ra('prev_day_difference','a_arbitraryid,arb_date','proj_test_dumb'))
 
 -- Prototype 'full minus' of in congruent relations
 -- ops.go(ops.full_minus_ra('proto_consec_date','prev_day_difference','arb_date','arb_date','proto_full_minus'));
@@ -51,5 +52,8 @@ DROP TABLE prev_day_match;
 select * from prev_day_difference;
 DROP TABLE prev_day_difference;
 
-select * from proto_full_minus;
-DROP TABLE proto_full_minus;
+select * from proj_test_dumb;
+DROP TABLE proj_test_dumb;
+
+-- select * from proto_full_minus;
+-- DROP TABLE proto_full_minus;
