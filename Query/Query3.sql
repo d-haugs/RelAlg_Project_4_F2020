@@ -44,7 +44,9 @@ execute immediate 'DROP TABLE cumul_cases';
 -- execute immediate 'select table_name from user_tables';
 
 -- ops.go(ops.mjoin_ra('a=date_country_pair_w_ccase_and_death','b=date_country_pair_w_ccase_and_death','arbdate,country','arbdate+1,country','day_previousday_pair'));
-ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','day_previousday_pair'));
+-- PROTOTYPE ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color,arb_date','color,arb_date+1','prev_day_match_both_dates'));
+-- ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','day_previousday_pair'));
+ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','arbdate=a_arbdate,country,a_cumdeathCount,b_cumdeathCount,a_cumconfirmedCount,b_cumconfirmedCount','day_previousday_pair'));
 
 --group over arbdate, carry country, func: max(death/case)
 --TODO; ops.go(ops.group_ra('date_country_pair_w_ccase_and_death','arbdate','country,worst_death=max(cumdeathCount/cumconfirmedCount)','worst_country_per_day'));
