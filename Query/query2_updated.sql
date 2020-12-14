@@ -8,7 +8,7 @@ BEGIN
 
 -- ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','deaths_without_lat_longitude'));
 -- ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','confirmed_cases_without_lat_longitude'));
-ops.go(ops.group_ra('RAW_global_deaths','arbdate,country','death_case_count=sum(confirmedCount)','death_cases_count_by_country_date_pair'));
+ops.go(ops.group_ra('RAW_global_deaths','arbdate,country','death_case_count=sum(deathCount)','death_cases_count_by_country_date_pair'));
 
 ops.go(ops.group_ra('RAW_global_confirmed_cases','arbdate,country','confirmed_case_count=sum(confirmedCount)','confirmed_cases_count_by_country_date_pair'));
 -- Match join 
