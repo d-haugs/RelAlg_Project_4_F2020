@@ -1,6 +1,6 @@
 -- @@drop
 
-DROP TABLE raw_global_confirmed_death_pair;
+DROP TABLE confirmed_death_pair_for_country_with_province;
 -- DROP TABLE confirmed_death_cases_count_by_country_date_pair;
 -- DROP TABLE latest_date_confirmed_death_cases_count_by_country_date_pair;
 SET SERVEROUTPUT ON
@@ -18,7 +18,7 @@ ops.go(ops.full_minus_ra('a=RAW_global_confirmed_cases','b=confirmed_death_pair_
 
 
 -- -- Group by genre to get "Genre with (number of streams for its most-streamed song) data"
-ops.go(ops.group_ra('raw_global_confirmed_death_pair','arbdate,country','by_country_confirmed_case_count=sum(confirmedCount),by_country_death_case_count=sum(deathCount)','confirmed_death_cases_count_by_country_date_pair'));
+-- ops.go(ops.group_ra('raw_global_confirmed_death_pair','arbdate,country','by_country_confirmed_case_count=sum(confirmedCount),by_country_death_case_count=sum(deathCount)','confirmed_death_cases_count_by_country_date_pair'));
 -- Group Max date
 -- ops.go(ops.group_ra('confirmed_death_cases_count_by_country_date_pair','country','by_country_confirmed_case_count,by_country_death_case_count','new_Date=max(arbdate)','latest_date_confirmed_death_cases_count_by_country_date_pair'));
 
@@ -32,7 +32,7 @@ ops.go(ops.group_ra('raw_global_confirmed_death_pair','arbdate,country','by_coun
 END;
 /
 
-select country,province,arbdate,deathCount,confirmedCount from raw_global_confirmed_death_pair where rownum <= 30;
+select country,province,arbdate,deathCount,confirmedCount from confirmed_death_pair_for_country_with_province where rownum <= 30;
 
 
 -- select country,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
