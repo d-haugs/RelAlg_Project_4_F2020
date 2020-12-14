@@ -5,6 +5,7 @@ DROP TABLE confirmeddeath_pair_for_country;
 DROP TABLE FILTER_CONFIRMEDDEATH_FOR_COUNTRY;
 DROP TABLE country_deathToConfirmed_ratio;
 DROP TABLE death_confirmed_pair;
+DROP TABLE final_confirmeddeath_ration;
 SET SERVEROUTPUT ON
 DECLARE
 BEGIN
@@ -32,3 +33,5 @@ END;
 select count(*) from death_count_by_country_date_pair;
 select count(*) from confirmed_count_by_country_date_pair;
 select count(*) from confirmeddeath_pair_for_country;
+select * from final_confirmeddeath_ration order By deathToConfirmedRatio;
+
