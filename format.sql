@@ -1,2 +1,2 @@
 set wrap off
-set line 300
+set line 350
