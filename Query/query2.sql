@@ -48,4 +48,4 @@ END;
 -- select country,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
 -- select country,new_Date,by_country_death_case_count,by_country_confirmed_case_count from latest_date_confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
 
-select * from RAW_global_deaths_without_lat_longitude where rownum <= 30;
+-- select * from RAW_global_deaths_without_lat_longitude where rownum <= 30;
