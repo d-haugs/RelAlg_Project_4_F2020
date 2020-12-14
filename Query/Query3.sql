@@ -21,8 +21,14 @@ BEGIN
 ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country','cumdeathCount=sum(deathCount)', 'RAW_global_deaths_cumul'));
 ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'RAW_global_confirmed_cases_cumul'));
 
+-- Attempt at grabbing the last day of results. 
+--the problem is the date isolation
+-- ops.go(ops.group_ra('RAW_global_deaths_cumul','country','cumdeathCount','lastDate=max(arbdate)', 'final_deaths_per_country'));
+-- ops.go(ops.group_ra('RAW_global_confirmed_cases_cumul','country','cumconfirmedCount','lastDate=max(arbdate)', 'final_cases_per_country'));
+
 
 --match confirmed cases and deaths by same date,country
+--TODO: 
 ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
 
 --It appears dropping tables is not allowed in a begin/end block (transaction?)
@@ -36,6 +42,7 @@ select table_name from user_tables;
 DECLARE
 BEGIN
 --group over arbdate, carry country, func: max(death/case)
+--TODO; 
 ops.go(ops.group_ra('date_country_pair_w_ccase_and_death','arbdate','country,worst_death=max(cumdeathCount/cumconfirmedCount)','worst_country_per_day'));
 
 --!!!NOTE: do this later
