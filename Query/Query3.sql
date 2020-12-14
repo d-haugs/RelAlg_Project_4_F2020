@@ -40,7 +40,7 @@ execute immediate 'DROP TABLE RAW_global_confirmed_cases_cumul';
 
 execute immediate 'select table_name from user_tables';
 
-ops.go(ops.mjoin_ra('a=date_country_pair_w_ccase_and_death','date_country_pair_w_ccase_and_death','arbdate,country','arbdate+1,country','day_previousday_pair'));
+ops.go(ops.mjoin_ra('a=date_country_pair_w_ccase_and_death','b=date_country_pair_w_ccase_and_death','arbdate,country','arbdate+1,country','day_previousday_pair'));
 
 execute immediate 'select * from day_previousday_pair where rownum <= 7';
 
