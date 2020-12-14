@@ -32,4 +32,4 @@ END;
 select country,province,arbdate,deathCount,confirmedCount from raw_global_confirmed_death_pair where rownum <= 30;
 
 
-select country,province,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
+select country,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
