@@ -5,6 +5,7 @@
 -- drop table raw_global_death_pair_non_province_countries;
 drop table RAW_global_deaths_cumul;
 drop table RAW_global_confirmed_cases_cumul;
+drop table matched_date_country_pair_w_case_and_death_data;
 
 
 SET SERVEROUTPUT ON
@@ -14,18 +15,25 @@ BEGIN
 
 -- ops.go(ops.project_ra('RAW_global_deaths', allbut('RAW_global_deaths','lat,longitude'), 'RAW_global_deaths_without_lat_long'));
 ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country','cumdeathCount=sum(deathCount)', 'RAW_global_deaths_cumul'));
-ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'RAW_global_confirmed_cases_cumul'))
+ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'RAW_global_confirmed_cases_cumul'));
 
-ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','matched_date_country_pair_w_case_and_death_data'))
+--match confirmed cases and deaths by same date,country
+ops.go(ops.mjoin_ra('RAW_global_deaths_cumul','RAW_global_confirmed_cases_cumul','arbdate,country','arbdate,country','matched_date_country_pair_w_case_and_death_data'));
 
--- Generate per day counts
-ops.go(ops.group_ra('raw_global_death_pair_province_countries', 'arbdate,country','daydeathCount=sum(cumdeathCount)', 'daily_death_for_day'));
-ops.go(ops.group_ra('raw_global_c_case_pair_province_countries', 'arbdate,country','dayconfirmedCount=sum(cumconfirmedCount)', 'daily_ccases_for_day'));
+-- ops.go(ops.reduce_ra('matched_date_country_pair_w_case_and_death_data','arbitraryID=TODO','arbdate,country,cumdeathCount,cumconfirmedCount','TODO'))
 
 --!!!NOTE: do this later
 -- Match deaths and confirmed cases with their previous day data per date,country
 -- ops.go(ops.mjoin_ra('a=RAW_global_deaths_cumul','b=RAW_global_deaths_cumul','arbdate,country','arbdate - 1,country','raw_global_death_pair_province_countries'));
 -- ops.go(ops.mjoin_ra('a=RAW_global_confirmed_cases_cumul','b=RAW_global_confirmed_cases_cumul','arbdate,country','arbdate - 1,country','raw_global_c_case_pair_province_countries'));
+-- Generate per day counts
+-- ops.go(ops.group_ra('raw_global_death_pair_province_countries', 'arbdate,country','daydeathCount=sum(cumdeathCount)', 'daily_death_for_day'));
+-- ops.go(ops.group_ra('raw_global_c_case_pair_province_countries', 'arbdate,country','dayconfirmedCount=sum(cumconfirmedCount)', 'daily_ccases_for_day'));
+
+
+
+
+
 
 -- Match join RAW_global_deaths with itself on country, province, 1 day difference
 -- ops.go(ops.mjoin_ra('a=RAW_global_deaths','b=RAW_global_deaths','country,province,arbdate','country,province,arbdate - 1','raw_global_death_pair_province_countries'));
