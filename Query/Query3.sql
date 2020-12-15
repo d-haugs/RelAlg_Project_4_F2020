@@ -10,7 +10,7 @@ drop table worst_country_per_day;
 drop table short_name;
 
 --test group
-drop table jan_feb_deaths_cumul;
+-- drop table jan_feb_deaths_cumul;
 
 
 SET SERVEROUTPUT ON
@@ -18,7 +18,6 @@ DECLARE
 BEGIN
 
 
--- ops.go(ops.project_ra('RAW_global_deaths', allbut('RAW_global_deaths','lat,longitude'), 'RAW_global_deaths_without_lat_long'));
 ops.go(ops.group_ra('RAW_global_deaths', 'arbdate,country','cumdeathCount=sum(deathCount)', 'cumul_deaths'));
 ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirmedCount=sum(confirmedCount)', 'cumul_cases'));
 
@@ -27,6 +26,7 @@ ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirm
 -- ops.go(ops.group_ra('cumul_deaths','country','cumdeathCount','lastDate=max(arbdate)', 'final_deaths_per_country'));
 -- ops.go(ops.group_ra('cumul_cases','country','cumconfirmedCount','lastDate=max(arbdate)', 'final_cases_per_country'));
 
+-- parallel attempt at making a next day exist
 -- ops.go(ops.mjoin_ra('a=cumul_deaths','b=cumul_deaths','arbdate,country','arbdate+1,country','parallel_path'));
 
 --match confirmed cases and deaths by same date,country
@@ -34,8 +34,7 @@ ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirm
 --TODO: 
 -- ops.go(ops.mjoin_ra('cumul_deaths','cumul_cases','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
 ops.go(ops.mjoin_ra('d=cumul_deaths','c=cumul_cases','arbdate,country','arbdate,country','short_name'));
---TODO: attempt to do this join as a for loop and unions.
---???How would I drop the generated tables, if I can't drop in a BEGIN-END block?
+--TODO: attempt to do this join as a for loop and unions for the complete dataset.
 
 --TEST
 execute immediate 'DROP TABLE cumul_deaths';
@@ -48,7 +47,7 @@ execute immediate 'DROP TABLE cumul_cases';
 -- PROTOTYPE ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color,arb_date','color,arb_date+1','prev_day_match_both_dates'));
 -- ops.go(ops.mjoin_ra('a=short_name','b=short_name','arbdate,country','arbdate+1,country','day_previousday_pair'));
 -- ops.go(ops.mjoin_ra('a=short_name','b=short_name','arbdate,country','arbdate+1,country','arbdate=a_arbdate,country,a_cumdeathCount,b_cumdeathCount,a_cumconfirmedCount,b_cumconfirmedCount','day_previousday_pair'));
-ops.go(ops.mjoin_ra('a=short_name','b=short_name','country,arbdate','country,arbdate+1','day_previousday_pair'));
+ops.go(ops.mjoin_ra('a=short_name','b=short_name','country,arbdate-1','country,arbdate','day_previousday_pair'));
 
 --group over arbdate, carry country, func: max(death/case)
 --TODO; ops.go(ops.group_ra('date_country_pair_w_ccase_and_death','arbdate','country,worst_death=max(cumdeathCount/cumconfirmedCount)','worst_country_per_day'));
