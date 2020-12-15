@@ -21,7 +21,7 @@ ops.go(ops.mjoin_ra('a=confirmed_count_by_country_date_pair','b=death_count_by_c
 
 
 -- Match join both confirmed_count_by_country_date_pair and death_count_by_country_date_pair table on country,arbdate and  got confirmeddeath_pair_for_country table
-ops.go(ops.mjoin_ra('a=confirmeddeath_pair_for_country','b=confirmeddeath_pair_for_country','country,arbdate','country,arbdate','day_previousday_pair')); 
+ops.go(ops.mjoin_ra('a=confirmeddeath_pair_for_country','b=confirmeddeath_pair_for_country','country,arbdate','country,arbdate-1','day_previousday_pair')); 
 
 
 
