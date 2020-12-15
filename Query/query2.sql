@@ -1,3 +1,4 @@
+--  To get death To confirmation cases ratio
 -- @@drop
 DROP TABLE death_count_by_country_date_pair;
 DROP TABLE confirmed_count_by_country_date_pair;
@@ -36,5 +37,7 @@ END;
 select count(*) from RAW_global_deaths;
 select count(*) from RAW_global_confirmed_cases;
 --  to get order from worest to best death to confirmed case ratios
-select * from final_confirmeddeath_ratio order By deathToConfirmedRatio DESC;
+select arbdate,country,deathToConfirmedRatio from final_confirmeddeath_ratio order By deathToConfirmedRatio DESC;
+
+
 
