@@ -8,7 +8,7 @@ BEGIN
 ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color','color','p_mj_cdate'));
 
 -- Hypothesis test on consecutive mjoins from our broken column length problem.
-ops.go(ops.mjoin_ra('a=p_mj_cdate','b=p_mj_cdate','color,arb_date','color,arb_date+1','foo'));
+ops.go(ops.mjoin_ra('a=p_mj_cdate','b=p_mj_cdate','color,a_arb_date','color,a_arb_date+1','foo'));
 
 --Prototype use of group
 ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_plus_count_sum'));
