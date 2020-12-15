@@ -27,7 +27,7 @@ ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirm
 -- ops.go(ops.group_ra('cumul_deaths','country','cumdeathCount','lastDate=max(arbdate)', 'final_deaths_per_country'));
 -- ops.go(ops.group_ra('cumul_cases','country','cumconfirmedCount','lastDate=max(arbdate)', 'final_cases_per_country'));
 
-ops.go(ops.mjoin_ra('a=cumul_deaths','b=cumul_deaths','arbdate,country','arbdate+1,country','parallel_path'));
+-- ops.go(ops.mjoin_ra('a=cumul_deaths','b=cumul_deaths','arbdate,country','arbdate+1,country','parallel_path'));
 
 --match confirmed cases and deaths by same date,country
 --WARNING: this is too big for the full dataset. must be broken down to run on that.
