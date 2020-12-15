@@ -6,7 +6,7 @@ BEGIN
 
 ops.go(ops.filter_ra('proto_consec_date','color=''blue''','filter_test'));
 
-ops.go(ops.filter_ra('proto_consec_date','color=blue','filter_test'));
+-- ops.go(ops.filter_ra('proto_consec_date','color=blue','filter_test'));
 
 
 END;

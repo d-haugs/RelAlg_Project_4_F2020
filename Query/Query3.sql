@@ -9,6 +9,15 @@ drop table date_country_pair_w_ccase_and_death;
 drop table worst_country_per_day;
 drop table short_name;
 
+--dropping good faith generated tables
+drop table single_date_day_previousday_pair;
+drop table prev_day_difference;
+drop table daily_case_death_datecountry_pair;
+drop table daily_data_without_0_cases;
+drop table worst_ratio_per_date;
+drop table days_count_as_worst_country;
+drop table most_days_as_worst_country;
+
 --test group
 -- drop table jan_feb_deaths_cumul;
 
@@ -37,8 +46,9 @@ ops.go(ops.mjoin_ra('d=cumul_deaths','c=cumul_cases','arbdate,country','arbdate,
 --TODO: attempt to do this join as a for loop and unions for the complete dataset.
 
 --TEST
-execute immediate 'DROP TABLE cumul_deaths';
-execute immediate 'DROP TABLE cumul_cases';
+-- For the pragmatic function of dropping old tables for space limitation reasons
+-- execute immediate 'DROP TABLE cumul_deaths';
+-- execute immediate 'DROP TABLE cumul_cases';
 
 --does not work
 -- execute immediate 'select table_name from user_tables';
@@ -48,6 +58,17 @@ execute immediate 'DROP TABLE cumul_cases';
 -- ops.go(ops.mjoin_ra('a=short_name','b=short_name','arbdate,country','arbdate+1,country','day_previousday_pair'));
 -- ops.go(ops.mjoin_ra('a=short_name','b=short_name','arbdate,country','arbdate+1,country','arbdate=a_arbdate,country,a_cumdeathCount,b_cumdeathCount,a_cumconfirmedCount,b_cumconfirmedCount','day_previousday_pair'));
 ops.go(ops.mjoin_ra('a=short_name','b=short_name','country,arbdate-1','country,arbdate','day_previousday_pair'));
+
+-- ======================================
+-- NOTE: following RA operations are written on good faith that the preceding operations have run despite backend problems with an earlier match join
+-- ======================================
+ops.go(ops.reduce_ra('day_previousday_pair','arbdate=a_arbdate,country','a_cumdeathCount,b_cumdeathCount,a_cumconfirmedCount,b_cumconfirmedCount','single_date_day_previousday_pair'));
+ops.go(ops.project_ra('prev_day_match','arbitraryid,arb_date,color,count_change=a_count-b_count','prev_day_difference'));
+ops.go(ops.project_ra('single_date_day_previousday_pair','arbdate,country,day_deaths=a_cumdeathCount-b_cumdeathCount,day_cases=a_cumconfirmedCount-b_cumconfirmedCount','daily_case_death_datecountry_pair'));
+ops.go(ops.filter_ra('daily_case_death_datecountry_pair','day_cases!=0','daily_data_without_0_cases'));
+ops.go(ops.group_ra('daily_data_without_0_cases','arbdate','country','worst_ratio=max(day_death/day_cases)','worst_ratio_per_date'));
+ops.go(ops.group_ra('worst_ratio_per_date','country','country_count=count(*)','days_count_as_worst_country'));
+ops.go(ops.group_ra('days_count_as_worst_country','country','most_days=max(country_count)','most_days_as_worst_country'));
 
 --group over arbdate, carry country, func: max(death/case)
 --TODO; ops.go(ops.group_ra('date_country_pair_w_ccase_and_death','arbdate','country,worst_death=max(cumdeathCount/cumconfirmedCount)','worst_country_per_day'));
