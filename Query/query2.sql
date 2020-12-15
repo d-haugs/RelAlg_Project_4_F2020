@@ -1,51 +1,40 @@
 -- @@drop
-
--- DROP TABLE death_cases_for_country_without_province;
--- DROP TABLE confirmed_death_pair_for_country_without_province;
-
--- DROP TABLE confirmed_death_cases_count_by_country_date_pair;
--- DROP TABLE latest_date_confirmed_death_cases_count_by_country_date_pair;
+DROP TABLE death_count_by_country_date_pair;
+DROP TABLE confirmed_count_by_country_date_pair;
+DROP TABLE confirmeddeath_pair_for_country;
+DROP TABLE FILTER_CONFIRMEDDEATH_FOR_COUNTRY;
+DROP TABLE country_deathToConfirmed_ratio;
+DROP TABLE death_confirmed_ratio_WithMaxDate;
+DROP TABLE final_confirmeddeath_ratio;
 SET SERVEROUTPUT ON
 DECLARE
 BEGIN
+-- Group  on RAW_global_deaths table on arbdate,country get sum of deathCount
+ops.go(ops.group_ra('RAW_global_deaths','arbdate,country','death_case_count=sum(deathCount)','death_count_by_country_date_pair'));
 
--- ops.go(ops.project_ra('RAW_global_deaths','arbitraryID,arbdate,country,province,deathCount','deaths_without_lat_longitude'));
--- ops.go(ops.project_ra('RAW_global_confirmed_cases','arbitraryID,arbdate,country,province,confirmedCount','confirmed_cases_without_lat_longitude'));
+-- Group  on RAW_global_confirmed_cases table arbdate,country get sum of confirmedCount
+ops.go(ops.group_ra('RAW_global_confirmed_cases','arbdate,country','confirmed_case_count=sum(confirmedCount)','confirmed_count_by_country_date_pair'));
 
-ops.go(ops.group_ra('RAW_global_confirmed_cases','arbdate,country','by_country_confirmed_case_count=sum(confirmedCount)','confirmed_death_cases_count_by_country_date_pair'));
--- Match join 
--- Match Join all song data to get back "Song with its total number of streams"
--- ops.go(ops.mjoin_ra('a=deaths_without_lat_longitude','b=confirmed_cases_without_lat_longitude','country,province,arbdate','country,province,arbdate','country,province,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_with_province')); 
+-- Match join both confirmed_count_by_country_date_pair and death_count_by_country_date_pair table on country,arbdate and  got confirmeddeath_pair_for_country table
+ops.go(ops.mjoin_ra('a=confirmed_count_by_country_date_pair','b=death_count_by_country_date_pair','country,arbdate','country,arbdate','country,arbdate,death_case_count,confirmed_case_count','confirmeddeath_pair_for_country')); 
 
--- ops.go(ops.full_minus_ra('deaths_without_lat_longitude','confirmed_cases_without_lat_longitude','country,province','country,province','confirmed_cases_for_country_without_province')); 
+-- Filter out confirmed_case_count zero values to avoid divide by 0 issue while doing deathcount/confirmed cases count and got filter_confirmeddeath_for_country table
+ops.go(ops.filter_ra('confirmeddeath_pair_for_country','confirmed_case_count!=0','filter_confirmeddeath_for_country'));
 
--- ops.go(ops.full_minus_ra('RAW_global_confirmed_cases_without_lat_longitude','confirmed_death_pair_for_country_with_province','country,province','country,province','death_cases_for_country_without_province')); 
+--  Project to get deathToConfirmedRatio=death_case_count/confirmed_case_count got country_deathToConfirmed_ratio
+ops.go(ops.project_ra('filter_confirmeddeath_for_country','country,arbdate,deathToConfirmedRatio=death_case_count/confirmed_case_count','country_deathToConfirmed_ratio'));
 
--- ops.go(ops.mjoin_ra('a=confirmed_cases_for_country_without_province','b=death_cases_for_country_without_province','country,arbdate','country,arbdate','country,arbdate,confirmedCount,deathCount','confirmed_death_pair_for_country_without_province')); 
+-- Group By country to get Max date and got death_confirmed_ratio_WithMaxDate
+ops.go(ops.group_ra('country_deathToConfirmed_ratio','country','new_Date=max(arbdate)','death_confirmed_ratio_WithMaxDate'));
 
-
--- -- Group by genre to get "Genre with (number of streams for its most-streamed song) data"
--- ops.go(ops.group_ra('raw_global_confirmed_death_pair','arbdate,country','by_country_confirmed_case_count=sum(confirmedCount),by_country_death_case_count=sum(deathCount)','confirmed_death_cases_count_by_country_date_pair'));
--- Group Max date
--- ops.go(ops.group_ra('confirmed_death_cases_count_by_country_date_pair','country','by_country_confirmed_case_count,by_country_death_case_count','new_Date=max(arbdate)','latest_date_confirmed_death_cases_count_by_country_date_pair'));
+-- MJ  death_confirmed_ratio_WithMaxDate to country_deathToConfirmed_ratio to get final_confirmeddeath_ratio by country
+ops.go(ops.mjoin_ra('a=country_deathToConfirmed_ratio','b=death_confirmed_ratio_WithMaxDate','country,arbdate','country,new_Date','country,arbdate,deathToConfirmedRatio','final_confirmeddeath_ratio')); 
 
 
 END;
 /
--- select * from deaths_without_lat_longitude where rownum <= 30;
--- select * from confirmed_cases_without_lat_longitude where rownum <= 30;
--- select * from confirmed_death_pair_for_country_with_province where rownum <= 30;
--- select * from confirmed_cases_for_country_without_province where rownum <= 30;
--- -- select country,province,arbdate,deathCount,confirmedCount from confirmed_death_pair_for_country_with_province where rownum <= 30;
+select count(*) from RAW_global_deaths;
+select count(*) from RAW_global_confirmed_cases;
+--  to get order from worest to best death to confirmed case ratios
+select * from final_confirmeddeath_ratio order By deathToConfirmedRatio DESC;
 
-
--- -- select country,arbdate,by_country_death_case_count,by_country_confirmed_case_count from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
--- -- select country,new_Date,by_country_death_case_count,by_country_confirmed_case_count from latest_date_confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
-
--- -- select * from RAW_global_deaths_without_lat_longitude where rownum <= 30;
-
--- DROP TABLE deaths_without_lat_longitude;
--- DROP TABLE confirmed_cases_without_lat_longitude;
--- DROP TABLE confirmed_death_pair_for_country_with_province;
--- DROP TABLE confirmed_cases_for_country_without_province;
-select * from confirmed_death_cases_count_by_country_date_pair where rownum <= 30;
