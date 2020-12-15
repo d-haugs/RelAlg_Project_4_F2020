@@ -32,7 +32,7 @@ ops.go(ops.group_ra('RAW_global_confirmed_cases', 'arbdate,country', 'cumconfirm
 --WARNING: this is too big for the full dataset. must be broken down to run on that.
 --TODO: 
 -- ops.go(ops.mjoin_ra('cumul_deaths','cumul_cases','arbdate,country','arbdate,country','date_country_pair_w_ccase_and_death'));
-ops.go(ops.mjoin_ra('d=cumul_deaths','c=cumul_cases','arbdate,country','arbdate,country','short'));
+ops.go(ops.mjoin_ra('d=cumul_deaths','c=cumul_cases','arbdate,country','arbdate,country','short_name'));
 --TODO: attempt to do this join as a for loop and unions.
 --???How would I drop the generated tables, if I can't drop in a BEGIN-END block?
 
@@ -47,7 +47,7 @@ execute immediate 'DROP TABLE cumul_cases';
 -- PROTOTYPE ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color,arb_date','color,arb_date+1','prev_day_match_both_dates'));
 -- ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','day_previousday_pair'));
 -- ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','arbdate=a_arbdate,country,a_cumdeathCount,b_cumdeathCount,a_cumconfirmedCount,b_cumconfirmedCount','day_previousday_pair'));
-ops.go(ops.mjoin_ra('a=short','b=short','arbdate,country','arbdate+1,country','arbdate=a_arbdate,country','day_previousday_pair'));
+ops.go(ops.mjoin_ra('a=short_name','b=short_name','arbdate,country','arbdate+1,country','arbdate=a_arbdate,country','day_previousday_pair'));
 
 --group over arbdate, carry country, func: max(death/case)
 --TODO; ops.go(ops.group_ra('date_country_pair_w_ccase_and_death','arbdate','country,worst_death=max(cumdeathCount/cumconfirmedCount)','worst_country_per_day'));
