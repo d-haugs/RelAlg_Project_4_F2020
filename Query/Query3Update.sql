@@ -21,7 +21,7 @@ ops.go(ops.mjoin_ra('a=confirmed_count_by_country_date_pair','b=death_count_by_c
 
 
 -- Match join both confirmed_count_by_country_date_pair and death_count_by_country_date_pair table on country,arbdate and  got confirmeddeath_pair_for_country table
-ops.go(ops.mjoin_ra('a=confirmeddeath_pair_for_country','b=confirmeddeath_pair_for_country','country,arbdate','country,arbdate+1','day_previousday_pair')); 
+ops.go(ops.mjoin_ra('a=confirmeddeath_pair_for_country','b=confirmeddeath_pair_for_country','country,arbdate','country,arbdate-1','day_previousday_pair')); 
 
 
 
@@ -29,7 +29,7 @@ END;
 /
 select count(*) from RAW_global_deaths;
 select count(*) from RAW_global_confirmed_cases;
-select count(*) from day_previousday_pair;
+select count(*) from RAW_global_confirmed_cases;
 --  to get order from worest to best death to confirmed case ratios
 -- select * from day_previousday_pair order By deathToConfirmedRatio DESC;
 
