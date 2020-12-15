@@ -1,3 +1,4 @@
+--  To get death To confirmation cases ratio
 -- @@drop
 DROP TABLE death_count_by_country_date_pair;
 DROP TABLE confirmed_count_by_country_date_pair;
