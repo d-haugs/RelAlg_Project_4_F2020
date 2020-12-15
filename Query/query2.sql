@@ -36,5 +36,7 @@ END;
 select count(*) from RAW_global_deaths;
 select count(*) from RAW_global_confirmed_cases;
 --  to get order from worest to best death to confirmed case ratios
-select * from final_confirmeddeath_ratio order By deathToConfirmedRatio DESC;
+select arbdate,country,deathToConfirmedRatio from final_confirmeddeath_ratio order By deathToConfirmedRatio DESC;
+
+
 
