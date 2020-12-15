@@ -7,11 +7,11 @@ BEGIN
 -- Prototype using mjoin
 ops.go(ops.mjoin_ra('a=proto_consec_date','b=proto_consec_date','color','color','p_mj_cdate'));
 
+-- Hypothesis test on consecutive mjoins from our broken column length problem.
+ops.go(ops.mjoin_ra('a=p_mj_cdate','b=p_mj_cdate','color,arb_date','color,arb_date+1','foo'));
+
 --Prototype use of group
 ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_plus_count_sum'));
-
---Incomplete attempt to subtract previous day from today
--- ops.go(ops.group_ra('proto_consec_date','color','count_sum=sum(count)','color_plus_count_sum'));
 
 -- Prototype using mjoin to match consecutive values of date (for getting to difference from yesterday)
 -- with 'color' as a stand-in for the rest of your real relation's itentifier
@@ -37,6 +37,9 @@ END;
 
 select * from p_mj_cdate;
 DROP TABLE p_mj_cdate;
+
+select * from foo;
+DROP TABLE foo;
 
 select * from color_plus_count_sum;
 DROP TABLE color_plus_count_sum;
